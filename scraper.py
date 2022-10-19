@@ -30,8 +30,6 @@ def get_links(project_link, max_page_range=50):
                 links.append(link)
 
         print(url, s.status_code)
-        if i == 5:
-            break
         time.sleep(5)
     return links
 
@@ -96,18 +94,59 @@ if __name__ == "__main__":
     # condo_links = get_links(condo_url, max_page_range= page)  
     # project_condo_links =  pd.DataFrame({'links', condo_links})
     # project_condo_links.to_csv('condo_links.csv', index = False)
-    condo_links = pd.read_csv("condo_links.csv")
-    condo_project_links = list(condo_links.links)
-    condo_units = get_unit(condo_project_links, type='condo')
-    condo_units.to_csv("condo_unit.csv", index=False)
+
+
+    # condo_links = pd.read_csv("condo_links.csv")
+    # condo_project_links = list(condo_links.links)
+    # chunks = [condo_project_links[x:x+100] for x in range(0, len(condo_project_links), 100)]
+
+    # count = 0
+
+    # for i in chunks:
+    #     condo_units = get_unit(i, type='condo')
+    #     condo_units.to_csv("condo_unit_{}.csv".format(count), index=False)
+    #     count+=1
+
+    # condo_unit = pd.read_csv("condo_unit_0.csv")
+    # count = 0 
+    # while True:
+    #     count+=1
+    #     try:
+    #         new_unit = pd.read_csv("condo_unit_{}.csv".format(count))
+    #         condo_unit = condo_unit.append(new_unit, ignore_index= True)
+    #     except:
+    #         break
+
+    # condo_unit.to_csv("condo_unit.csv", index = False)
+
 
 
     # apartment_url = "https://www.propertyguru.com.sg/condo-directory/search-apartment-project"
     # page = get_last_page(apartment_url)
-    # apartment_links = get_links( apartment_url, max_page_range= page)  # to improve on range
-    # project_apartment_links =  pd.DataFrame({'links', apartment_links})
+    # apartment_links = get_links( apartment_url, max_page_range= page)
+    # project_apartment_links =  pd.DataFrame({'links': apartment_links})
     # project_apartment_links.to_csv('apartment_links.csv', index = False)
-    # apartment_links = pd.read_csv("apartment_links.csv")
-    # apartment_project_links = list(apartment_links.links)
-    # apartment_units = get_unit(apartment_project_links, type='apartment')
-    # apartment_units.to_csv("apartment_unit.csv", index=False)
+
+
+    apartment_links = pd.read_csv("apartment_links.csv")
+    apartment_project_links = list(apartment_links.links)
+    
+    chunks = [apartment_project_links[x:x+200] for x in range(0, len(apartment_project_links), 200)]
+    count = 0
+
+    for i in chunks:
+        apartment_units = get_unit(i, type='apartment')
+        apartment_units.to_csv("apartment_units_{}.csv".format(count), index=False)
+        count+=1
+
+    apartment_unit = pd.read_csv("apartment_unit_0.csv")
+    count = 0 
+    while True:
+        count+=1
+        try:
+            new_unit = pd.read_csv("apartment_unit_{}.csv".format(count))
+            apartment_unit = apartment_unit.append(new_unit, ignore_index= True)
+        except:
+            break
+
+    apartment_unit.to_csv("condo_unit.csv", index = False)
